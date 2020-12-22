@@ -58,19 +58,13 @@ std::string Shader::read_shader_file(const char * file_path)
 void Shader::add_shader(unsigned int program, const char * shader_path, GLenum shader_type)
 {
     std::string shader_string = read_shader_file(shader_path);
- 
-    const GLchar * code[1];
-    code[0] = shader_string.c_str();
- 
-    GLint code_length[1];
-    code_length[0] = strlen(shader_string.c_str());
- 
     unsigned int shader;
+    const char* vsSourceCstr = shader_string.c_str();
     int success;
     char error_message[512];
  
     shader = glCreateShader(shader_type);
-    glShaderSource(shader, 1, code, code_length);
+    glShaderSource(shader, 1, &vsSourceCstr, NULL);
     glCompileShader(shader);
  
     glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
