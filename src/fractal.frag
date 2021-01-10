@@ -49,9 +49,9 @@ vec4 return_color()
     float iterations = float(iter) / MAX_ITERATIONS;
     gl_FragDepth = iterations;
  
-    vec4 color_0 = vec4(0.0f, 0.0f, 0.0f, 1.0f);
-    vec4 color_1 = vec4(0.0f, 0.2f, 0.5f, 1.0f);
-    vec4 color_2 = vec4(1.0f, 0.8f, 0.0f, 1.0f);
+    vec4 color_0 = vec4(0.8f, 0.5f, 0.0f, 0.05f);
+    vec4 color_1 = vec4(0.0f, 0.8f, 0.5f, 1.0f);
+    vec4 color_2 = vec4(1.0f, 0.0f, 0.0f, 1.0f);
     vec4 color_3 = vec4(1.0f, 0.0f, 0.4f, 1.0f);
  
     float fraction = 0.0f;

@@ -77,14 +77,14 @@ void process_input(GLFWwindow * window)
             center_x = 1.0f;
     }
  
-    if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
+    if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
     {
         zoom = zoom * 1.04f;
         if (zoom > 1.0f)
             zoom = 1.0f;
     }
  
-    if (glfwGetKey(window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS)
+    if (glfwGetKey(window, GLFW_KEY_Z) == GLFW_PRESS)
     {
         zoom = zoom * 0.96f;
         if (zoom < 0.00001f)
@@ -159,7 +159,6 @@ int main()
 
     while (!glfwWindowShouldClose(window))
     {
-        glClearColor(0.2f, 0.0f, 0.2f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
  
         process_input(window);
