@@ -5,13 +5,19 @@
 #include <algorithm>
 
 
+#include <GL/glew.h>
+#include <GLFW/glfw3.h>
+#include <glm/glm.hpp>
+
 #include <c3ga/Mvec.hpp>
 
 #include "c3gaTools.hpp"
 #define STB_IMAGE_WRITE_IMPLEMENTATION
-#include "stb_image_write.h"
+#include "utils/stb_image_write.h"
 
-void computeFractal(const c3ga::Mvec<double> &translation, const c3ga::Mvec<double> &c, const c3ga::Mvec<float> zoom, int maxIter,
+#include "utils/displayTexture.h"
+
+unsigned char* computeFractal(const c3ga::Mvec<double> &translation, const c3ga::Mvec<double> &c, const c3ga::Mvec<float> zoom, int maxIter,
                     std::vector<unsigned char> &rgbBuffer, int width, int height) 
 {
     int idx = 0;
@@ -29,7 +35,7 @@ void computeFractal(const c3ga::Mvec<double> &translation, const c3ga::Mvec<doub
             float imageYf = (float)(imageY-height/2);
             
             c3ga::Mvec<double> p;
-            p[c3ga::E0] = c3ga::e12<double>();
+            p[c3ga::E0] = c3ga::e0<double>();
             p[c3ga::E1] = imageXf;
             p[c3ga::E2] = imageYf;
 
@@ -45,11 +51,13 @@ void computeFractal(const c3ga::Mvec<double> &translation, const c3ga::Mvec<doub
             float valF = x.norm() / 10.0f;
             //unsigned char val = (valF > 255) ? 255 : (unsigned char)(valF + 0.5f);
 
-            rgbBuffer[idx + 0] = rgbBuffer[idx + 1] = rgbBuffer[idx + 2] = valF;
+            rgbBuffer[idx] = 255.0f;
+            rgbBuffer[idx + 1] = rgbBuffer[idx + 2] = valF;
             idx += 3;
         }
     }
-    stbi_write_png("export.png", 512, 512, 3, rgbBuffer.data(), 512 * 3);
+    //stbi_write_png("export.png", 512, 512, 3, rgbBuffer.data(), 512 * 3);
+    return rgbBuffer.data();
 }
 
 int main()
@@ -59,11 +67,11 @@ int main()
     c3ga::Mvec<double> g_zoom =  0.07f;
     int g_maxIter = 30;
 
-    int width = 512;
-    int height = 512;
+    int width = 1080;
+    int height = 1080;
     std::vector<unsigned char>buf(width * height * 3);
 
-    computeFractal(g_position, g_c, g_zoom, g_maxIter, buf, width, height);
-
+    unsigned char* rgbBuffer = computeFractal(g_position, g_c, g_zoom, g_maxIter, buf, width, height);
+    displayTexture(rgbBuffer,width,height,3);
     return 0;
 }

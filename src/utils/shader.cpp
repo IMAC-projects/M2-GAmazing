@@ -1,5 +1,5 @@
 #include "shader.h"
- 
+
 Shader::Shader(const char * vertex_shader_path, const char * fragment_shader_path)
 {
     program_ID = glCreateProgram();
@@ -34,7 +34,7 @@ void Shader::use_shader()
 }
  
  
-std::string Shader::read_shader_file(const char * file_path)
+std::string Shader::read_shader_file(const char* file_path)
 {
     std::string code;
     std::ifstream shader_file(file_path, std::ios::in);

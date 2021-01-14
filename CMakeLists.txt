@@ -1,19 +1,22 @@
 cmake_minimum_required(VERSION 3.5)
 
-project(GAMandelbrot)
+project(GAFractal)
 
-set(EXECUTABLE_NAME GAMandelbrot)
+set(EXECUTABLE_NAME GAFractal)
 set(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin)
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/")
 
 # Add source files
 file(GLOB_RECURSE SRC_FILES 
-	${CMAKE_SOURCE_DIR}/src/*.c
+    ${CMAKE_SOURCE_DIR}/src/*.c
+    ${CMAKE_SOURCE_DIR}/utils/*.cpp
 	${CMAKE_SOURCE_DIR}/src/*.cpp)
 	
 # Add header files
 file(GLOB_RECURSE HEADER_FILES 
-	${CMAKE_SOURCE_DIR}/src/*.h
+    ${CMAKE_SOURCE_DIR}/src/*.h
+    ${CMAKE_SOURCE_DIR}/utils/*.h
+    ${CMAKE_SOURCE_DIR}/utils/*.hpp
 	${CMAKE_SOURCE_DIR}/src/*.hpp)
 
 ## INCLUDE LIB ##

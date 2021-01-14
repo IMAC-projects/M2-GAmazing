@@ -1,16 +1,4 @@
-#include <iostream>
-#include <stdlib.h>
-#include <string>
-#include <vector>
-#include <algorithm>
- 
-#include <GL/glew.h>
-#include <GLFW/glfw3.h>
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
- 
-#include "shader.h"
+#include "displayTexture.h"
 
 int screen_width{ 1080 };
 int screen_height{ 1080 };
@@ -18,29 +6,10 @@ float center_x{ 0.0f };
 float center_y{ 0.0f };
 float zoom{ 1.0 };
 
-float vertices[] = 
+void framebuffer_size_callback(GLFWwindow * window, int screen_width, int screen_height)
 {
-//    x      y      z   
-    -1.0f, -1.0f, -0.0f,
-     1.0f,  1.0f, -0.0f,
-    -1.0f,  1.0f, -0.0f,
-     1.0f, -1.0f, -0.0f
-};
- 
-unsigned int indices[] = 
-{
-//  2---,1
-//  | .' |
-//  0'---3
-    0, 1, 2,
-    0, 3, 1
-};
-
-void framebuffer_size_callback(GLFWwindow * window, int width, int height)
-{
-    glViewport(0, 0, width, height);
+    glViewport(0, 0, screen_width, screen_height);
 }
-
 
 void process_input(GLFWwindow * window)
 {
@@ -106,21 +75,20 @@ glm::vec4 find_ranges(std::vector<float> & data)
     glm::vec4 ranges = glm::vec4( data[lowest], data[lowest + length * 3 / 4 - 1], data[lowest + length * 7 / 8 - 1], data[size - 1] );
     return ranges;
 }
-/*
-int main()
+
+void displayTexture(unsigned char* loadedTexture, int width, int height, int channels)
 {
     glfwInit();
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
  
-    GLFWwindow * window = glfwCreateWindow(screen_width, screen_height, "Mandelbrot", NULL, NULL);
+    GLFWwindow * window = glfwCreateWindow(screen_width, screen_height, "Texture", NULL, NULL);
  
     if (window == nullptr)
     {
         std::cout << "Failed to create GLFW window!\n";
         glfwTerminate();
-        return -1;
     }
  
     glfwMakeContextCurrent(window);
@@ -130,27 +98,67 @@ int main()
  
     glViewport(0, 0, screen_width, screen_height);
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
-
-    Shader our_shader("../src/fractal.vert", "../src/fractal.frag");
+    
+    Shader our_shader("./src/shader/displayTexture.vert", "./src/shader/displayTexture.frag");
+    
+    // data for a fullscreen quad
+    GLfloat vertices[] = {
+    //  X     Y     Z           U     V     
+       1.0f, 1.0f, 0.0f,       1.0f, 1.0f, // vertex 0
+      -1.0f, 1.0f, 0.0f,       0.0f, 1.0f, // vertex 1
+       1.0f,-1.0f, 0.0f,       1.0f, 0.0f, // vertex 2
+      -1.0f,-1.0f, 0.0f,       0.0f, 0.0f, // vertex 3
+    }; // 4 vertices with 5 components (floats) each
  
-    unsigned int VAO, VBO, EBO;
+    GLint texture_location = glGetUniformLocation(our_shader.program_ID, "tex");
+    unsigned int IBO, VBO, VAO;
     glGenVertexArrays(1, &VAO);
     glGenBuffers(1, &VBO);
-    glGenBuffers(1, &EBO);
+    glGenBuffers(1, &IBO);
  
     glBindVertexArray(VAO);
  
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
- 
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
- 
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat)*4*5, vertices, GL_STATIC_DRAW); 
+
+    // set up generic attrib pointers
     glEnableVertexAttribArray(0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5*sizeof(GLfloat), (char*)0 + 0*sizeof(GLfloat));
  
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glEnableVertexAttribArray(1);
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5*sizeof(GLfloat), (char*)0 + 3*sizeof(GLfloat));    
+
+    
+    // generate and bind the index buffer object
+    glGenBuffers(1, &IBO);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IBO);
+            
+    GLuint indexData[] = {
+        0,1,2, // first triangle
+        2,1,3, // second triangle
+    };
+
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLuint)*2*3, indexData, GL_STATIC_DRAW);
+ 
+    //unbind vao
     glBindVertexArray(0);
+
+    // texture handle
+    GLuint texture;
+    
+    // generate texture
+    glGenTextures(1, &texture);
+
+    // bind the texture
+    glBindTexture(GL_TEXTURE_2D, texture);
+
+    // set texture parameters
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, &loadedTexture[0]);
  
     glEnable(GL_DEPTH_TEST);
 
@@ -164,26 +172,29 @@ int main()
         process_input(window);
  
         our_shader.use_shader();
-        our_shader.set_float("zoom", zoom);
-        our_shader.set_float("center_x", center_x);
-        our_shader.set_float("center_y", center_y);
-        our_shader.set_vec4("color_ranges", ranges);
- 
+        // bind texture to texture unit 0
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, texture);
+        
+        // set texture uniform
+        glUniform1i(texture_location, 0);
+        
+        // bind the vao
         glBindVertexArray(VAO);
-         
+        
+        // draw
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
  
         glfwSwapBuffers(window);
         glfwPollEvents();
- 
-        glReadPixels(0, 0, screen_width, screen_height, GL_DEPTH_COMPONENT, GL_FLOAT, pixel_data.data());
         ranges = find_ranges(pixel_data);
     }
+    
+    glDeleteTextures(1, &texture);
  
     glDeleteVertexArrays(1, &VAO);
     glDeleteBuffers(1, &VBO);
-    glDeleteBuffers(1, &EBO);
+    glDeleteBuffers(1, &IBO);
  
     glfwTerminate();
-    return 0;
-}*/
+}
