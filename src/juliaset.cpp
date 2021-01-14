@@ -18,8 +18,8 @@ void computeFractal(const c3ga::Mvec<double> &translation, const c3ga::Mvec<doub
 
     c3ga::Mvec<double> vec;
     vec[c3ga::E0] = c3ga::e12<double>();
-    vec[c3ga::E1] = -0.835f;
-    vec[c3ga::E2] = -0.2321f;
+    vec[c3ga::E1] = 0.9f;
+    vec[c3ga::E2] = 0.3f;
 
     // for each pixel in the image, evaluate fractal function:
     for (int imageY = 0; imageY < height; imageY++) {
@@ -37,20 +37,18 @@ void computeFractal(const c3ga::Mvec<double> &translation, const c3ga::Mvec<doub
 
             for (int i = 0; i < maxIter; i++) {
                 x = x * x + c; // n = 2
-                /*if (x.norm() > 1e4f) {
+                if (x.norm()/10.0f > 20) {
                     break;
-                } // 1e4 = 'infinity'*/
+                }
             }
             
-            // convert to grey-scale value:
             float valF = x.norm() / 10.0f;
-            unsigned char val = (valF > 255) ? 255 : (unsigned char)(valF + 0.5f);
+            //unsigned char val = (valF > 255) ? 255 : (unsigned char)(valF + 0.5f);
 
-            rgbBuffer[idx + 0] = rgbBuffer[idx + 1] = rgbBuffer[idx + 2] = val;
+            rgbBuffer[idx + 0] = rgbBuffer[idx + 1] = rgbBuffer[idx + 2] = valF;
             idx += 3;
         }
     }
-    std::cout << rgbBuffer.data() << std::endl;
     stbi_write_png("export.png", 512, 512, 3, rgbBuffer.data(), 512 * 3);
 }
 
