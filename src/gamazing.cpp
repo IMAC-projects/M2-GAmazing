@@ -10,7 +10,8 @@
 #define STB_IMAGE_WRITE_IMPLEMENTATION
 #include "utils/stb_image_write.h"
 #include "utils/drawCircle.h"
-#include "utils/displayTexture.h"
+//#include "utils/displayTexture.h"
+#include "utils/flower.h"
 
 void circle() 
 {
@@ -27,6 +28,28 @@ void circle()
 
     std::cout << equation << std::endl;
     drawCa(center[c3ga::E1],center[c3ga::E2],radius*100);
+}
+
+void flower() 
+{
+    // sphere
+    c3ga::Mvec<double> sphere = c3ga::point<double>(0,0,2.0) 
+                              ^ c3ga::point<double>(2,0,2.0) 
+                              ^ c3ga::point<double>(1,1,2.0) 
+                              ^ c3ga::point<double>(1,0,3.0);
+    // dualize
+    sphere = sphere.dual();
+
+    // extract parameters
+    sphere /= sphere[c3ga::E0]; // back to correct scale
+    double squareRadius = sphere | sphere;
+    double radius = sqrt(squareRadius);
+    c3ga::Mvec<double> center = sphere;
+    center /= center[c3ga::E0];
+    c3ga::Mvec<double> direction;
+    direction[c3ga::E0] =  center[c3ga::E0];
+    std::cout << direction[c3ga::E0] << std::endl;
+    drawFlower(radius,direction[c3ga::E0]);
 }
 
 unsigned char* computeMandel(std::vector<unsigned char> &rgbBuffer, int max, int width, int height)
@@ -59,30 +82,6 @@ unsigned char* computeMandel(std::vector<unsigned char> &rgbBuffer, int max, int
                 }
             }
             rgbBuffer[(imageY * width + imageX) * 3] = idx;
-        }
-    }
-    return rgbBuffer.data();
-}
-
-unsigned char* tvThing(std::vector<unsigned char> &rgbBuffer, int max, int width, int height)
-{
-    int n = 50;
-    for (int imageX = 0; imageX < width; imageX++) 
-    {
-        for (int imageY = 0; imageY < height; imageY++) {
-            size_t index = imageX*width + imageY;
-            auto z = c3ga::e01<double>();
-            auto c = imageX * 1.75-1 + imageY * (c3ga::e1i<double>());
-            while(z <= 1 && n <=0) {
-                z = z * z  + c;
-                std::cout << z << std::endl;
-                n--;
-            }
-            if((int)z == 0) {
-                rgbBuffer[index] = c;
-            } else {
-                rgbBuffer[index] = 50.0f;
-            }
         }
     }
     return rgbBuffer.data();
@@ -165,6 +164,7 @@ unsigned char* computeFractal(const c3ga::Mvec<double> &translation, const c3ga:
     return rgbBuffer.data();
 }
 
+
 int main()
 {
     c3ga::Mvec<double> g_c = c3ga::point<double>(c3ga::e12<double>(),-0.9,-0.3);
@@ -178,7 +178,8 @@ int main()
 
     //unsigned char* rgbBuffer = computeFractal(g_position, g_c, g_zoom, g_maxIter, buf, width, height);
     //unsigned char* rgbBuffer = computeMandel(buf, g_maxIter, width, height);
-    circle();
+    //circle();
+    flower();
     //displayTexture(rgbBuffer,width,height,3);
     return 0;
 }
