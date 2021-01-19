@@ -184,7 +184,6 @@ void displayTexture(unsigned char* loadedTexture, int width, int height, int cha
         
         // draw
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
- 
         glfwSwapBuffers(window);
         glfwPollEvents();
         ranges = find_ranges(pixel_data);

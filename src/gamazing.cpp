@@ -4,60 +4,29 @@
 #include <vector>
 #include <algorithm>
 
-
-#include <GL/glew.h>
-#include <GLFW/glfw3.h>
-#include <glm/glm.hpp>
-
 #include <c3ga/Mvec.hpp>
 
-#include "c3gaTools.hpp"
+#include "utils/c3gaTools.hpp"
 #define STB_IMAGE_WRITE_IMPLEMENTATION
 #include "utils/stb_image_write.h"
-
+#include "utils/drawCircle.h"
 #include "utils/displayTexture.h"
 
-unsigned char* circleSphere(std::vector<unsigned char> &rgbBuffer, int width, int height) 
+void circle() 
 {
     // a primal circle
     c3ga::Mvec<double> C = c3ga::point<double>(1,2,2.0) 
                               ^ c3ga::point<double>(2,0,2.0) 
                               ^ c3ga::point<double>(1,0,2.0);   
+    double radius;
+    c3ga::Mvec<double> center, direction;
+    extractDualCircle(C.dual(), radius,  center, direction);
+    auto equation = "Circle( Point({" + std::to_string(center[c3ga::E1]) + ","  + std::to_string(center[c3ga::E2]) + ","  + std::to_string(center[c3ga::E3]) + "}), "
+                + std::to_string(fabs(radius))
+                + ", Vector((" + std::to_string(direction[c3ga::E1]) + ","  + std::to_string(direction[c3ga::E2]) + ","  + std::to_string(direction[c3ga::E3]) + ")))";
 
-
-    for(int i = 0; i < 30; i++) 
-    {
-        c3ga::Mvec<double> line = c3ga::randomPoint<double>() 
-                                ^ c3ga::randomPoint<double>()  
-                                ^ c3ga::ei<double>();
-        c3ga::Mvec<double> dualSphere = (!(line)) | C;
-        c3ga::Mvec<double> ray = dualSphere | dualSphere;
-
-        const bool intersect = (ray >= 0) ? false : true;
-
-        for (int imageX = 0; imageX < width; imageX++) 
-        {
-            for (int imageY = 0; imageY < height; imageY++) {
-                size_t index = imageX*width + imageY;
-                if(intersect && int(dualSphere.norm()) <= 1) 
-                {
-                    rgbBuffer[index] = int(dualSphere.norm() * 20);
-                    rgbBuffer[index+1] = int(dualSphere.norm() * 20);
-                    rgbBuffer[index+2] = int(dualSphere.norm() * 20);
-
-                } else {
-                    rgbBuffer[index] = 50;
-                    rgbBuffer[index+1] = 50;
-                    rgbBuffer[index+2] = 50;
-
-                }
-                    
-            }
-        }
-    }
-    
-    return rgbBuffer.data();
-
+    std::cout << equation << std::endl;
+    drawCa(center[c3ga::E1],center[c3ga::E2],radius*100);
 }
 
 unsigned char* computeMandel(std::vector<unsigned char> &rgbBuffer, int max, int width, int height)
@@ -71,6 +40,15 @@ unsigned char* computeMandel(std::vector<unsigned char> &rgbBuffer, int max, int
             c[c3ga::E0] = c3ga::e12<double>();
             c[c3ga::E1] = imageXf;
             c[c3ga::E2] = imageYf;
+            //std::string mvType = c3ga::whoAmI(c);
+            //std::cout << "type = " <<  mvType << std::endl;
+            auto equation = std::to_string(c[c3ga::E1]) + " x ";
+            if(c[c3ga::E2] >= 0) equation += " + "; 
+            equation += std::to_string(c[c3ga::E2]) + " y ";
+            if(c[c3ga::E3] >= 0) equation += " + "; 
+            equation += std::to_string(c[c3ga::E3]) + " z ";
+            if(-c[c3ga::Ei] >= 0) equation += " + "; 
+            equation += std::to_string(-c[c3ga::Ei]) + " = 0";
             auto z = c;
             int idx = 0;
             while(idx < max) {
@@ -200,7 +178,7 @@ int main()
 
     //unsigned char* rgbBuffer = computeFractal(g_position, g_c, g_zoom, g_maxIter, buf, width, height);
     //unsigned char* rgbBuffer = computeMandel(buf, g_maxIter, width, height);
-    unsigned char* rgbBuffer = circleSphere(buf, width, height);
-    displayTexture(rgbBuffer,width,height,3);
+    circle();
+    //displayTexture(rgbBuffer,width,height,3);
     return 0;
 }
