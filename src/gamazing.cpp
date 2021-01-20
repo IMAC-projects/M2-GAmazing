@@ -10,8 +10,9 @@
 #define STB_IMAGE_WRITE_IMPLEMENTATION
 #include "utils/stb_image_write.h"
 #include "utils/drawCircle.h"
-//#include "utils/displayTexture.h"
+#include "utils/displayTexture.h"
 #include "utils/flower.h"
+#include "utils/sierpinski.h"
 
 void circle() 
 {
@@ -50,41 +51,6 @@ void flower()
     direction[c3ga::E0] =  center[c3ga::E0];
     std::cout << direction[c3ga::E0] << std::endl;
     drawFlower(radius,direction[c3ga::E0]);
-}
-
-unsigned char* computeMandel(std::vector<unsigned char> &rgbBuffer, int max, int width, int height)
-{
-    for(int imageY = 0; imageY < height; imageY++) {
-        for (int imageX = 0; imageX < width; imageX++) {
-
-            float imageXf = (float)(imageX-width/2);
-            float imageYf = (float)(imageY-height/2);
-            c3ga::Mvec<double> c;
-            c[c3ga::E0] = c3ga::e12<double>();
-            c[c3ga::E1] = imageXf;
-            c[c3ga::E2] = imageYf;
-            //std::string mvType = c3ga::whoAmI(c);
-            //std::cout << "type = " <<  mvType << std::endl;
-            auto equation = std::to_string(c[c3ga::E1]) + " x ";
-            if(c[c3ga::E2] >= 0) equation += " + "; 
-            equation += std::to_string(c[c3ga::E2]) + " y ";
-            if(c[c3ga::E3] >= 0) equation += " + "; 
-            equation += std::to_string(c[c3ga::E3]) + " z ";
-            if(-c[c3ga::Ei] >= 0) equation += " + "; 
-            equation += std::to_string(-c[c3ga::Ei]) + " = 0";
-            auto z = c;
-            int idx = 0;
-            while(idx < max) {
-                z = z + c;
-                idx = idx + 1;
-                if(z > 4.0) {
-                    break;
-                }
-            }
-            rgbBuffer[(imageY * width + imageX) * 3] = idx;
-        }
-    }
-    return rgbBuffer.data();
 }
 
 unsigned char* computeRedFractal(const c3ga::Mvec<double> &translation, const c3ga::Mvec<double> &c, const c3ga::Mvec<float> zoom, int maxIter,
@@ -179,7 +145,8 @@ int main()
     //unsigned char* rgbBuffer = computeFractal(g_position, g_c, g_zoom, g_maxIter, buf, width, height);
     //unsigned char* rgbBuffer = computeMandel(buf, g_maxIter, width, height);
     //circle();
-    flower();
+    //flower();
     //displayTexture(rgbBuffer,width,height,3);
+    sierpinski();
     return 0;
 }
