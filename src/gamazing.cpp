@@ -7,9 +7,7 @@
 #include <c3ga/Mvec.hpp>
 
 #include "utils/c3gaTools.hpp"
-#define STB_IMAGE_WRITE_IMPLEMENTATION
-#include "utils/stb_image_write.h"
-#include "utils/drawCircle.h"
+#include "utils/circle.h"
 #include "utils/displayTexture.h"
 #include "utils/flower.h"
 #include "utils/sierpinski.h"
@@ -28,7 +26,7 @@ void circle()
                 + ", Vector((" + std::to_string(direction[c3ga::E1]) + ","  + std::to_string(direction[c3ga::E2]) + ","  + std::to_string(direction[c3ga::E3]) + ")))";
 
     std::cout << equation << std::endl;
-    drawCa(center[c3ga::E1],center[c3ga::E2],radius*100);
+    displayCircle(center[c3ga::E1],center[c3ga::E2],radius*100);
 }
 
 void flower() 
@@ -49,8 +47,7 @@ void flower()
     center /= center[c3ga::E0];
     c3ga::Mvec<double> direction;
     direction[c3ga::E0] =  center[c3ga::E0];
-    std::cout << direction[c3ga::E0] << std::endl;
-    drawFlower(radius,direction[c3ga::E0]);
+    displayFlower(radius,direction[c3ga::E0]);
 }
 
 unsigned char* computeRedFractal(const c3ga::Mvec<double> &translation, const c3ga::Mvec<double> &c, const c3ga::Mvec<float> zoom, int maxIter,
@@ -87,7 +84,6 @@ unsigned char* computeRedFractal(const c3ga::Mvec<double> &translation, const c3
             idx += 3;
         }
     }
-    //stbi_write_png("export.png", 512, 512, 3, rgbBuffer.data(), 512 * 3);
     return rgbBuffer.data();
 }
 
@@ -126,7 +122,6 @@ unsigned char* computeFractal(const c3ga::Mvec<double> &translation, const c3ga:
             idx += 3;
         }
     }
-    //stbi_write_png("export.png", 512, 512, 3, rgbBuffer.data(), 512 * 3);
     return rgbBuffer.data();
 }
 
@@ -143,10 +138,10 @@ int main()
     std::vector<unsigned char>buf(width * height * 3);
 
     //unsigned char* rgbBuffer = computeFractal(g_position, g_c, g_zoom, g_maxIter, buf, width, height);
-    //unsigned char* rgbBuffer = computeMandel(buf, g_maxIter, width, height);
-    //circle();
+    unsigned char* rgbBuffer = computeRedFractal(g_position, g_c, g_zoom, g_maxIter, buf, width, height);
+    circle();
     //flower();
     //displayTexture(rgbBuffer,width,height,3);
-    sierpinski();
+    //sierpinski();
     return 0;
 }

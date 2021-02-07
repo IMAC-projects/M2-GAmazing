@@ -12,4 +12,4 @@ using namespace std;
 
 std::vector<float> drawglobeVBO(int radius, int direction);
 std::vector<int> drawglobeEBO(int radius, int direction);
-void drawFlower(int radius, int direction);
+void displayFlower(int radius, int direction);

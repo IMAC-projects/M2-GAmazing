@@ -99,7 +99,7 @@ void displayTexture(unsigned char* loadedTexture, int width, int height, int cha
     glViewport(0, 0, screen_width, screen_height);
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
     
-    Shader our_shader("./src/shader/displayTexture.vert", "./src/shader/displayTexture.frag");
+    Shader our_shader("../src/shader/displayTexture.vert", "../src/shader/displayTexture.frag");
     
     // data for a fullscreen quad
     GLfloat vertices[] = {

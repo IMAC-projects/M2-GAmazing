@@ -9,4 +9,4 @@
 #include <glm/gtc/type_ptr.hpp>
 
 void drawCircle(int x, int y, int r);
-void drawCa(int x, int y, int r);
+void displayCircle(int x, int y, int r);

@@ -1,4 +1,4 @@
-#include "drawCircle.h"
+#include "circle.h"
 
 
 int width{ 500 };
@@ -43,7 +43,7 @@ void drawCircle(int x, int y, int r) {
     glEnd();
 }
 
-void drawCa(int x, int y, int r)
+void displayCircle(int x, int y, int r)
 {
     glfwInit();
  

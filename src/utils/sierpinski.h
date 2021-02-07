@@ -25,7 +25,7 @@ void sierpinski()
 	}
 
     // Load shaders and use the resulting shader program
-	Shader shader("./src/shader/flower.vert", "./src/shader/flower.frag");
+	Shader shader("../src/shader/flower.vert", "../src/shader/flower.frag");
 
     glm::vec2 points[NumPoints];
 

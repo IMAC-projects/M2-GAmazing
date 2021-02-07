@@ -7,18 +7,16 @@ std::vector<float> drawglobeVBO(int radius, int direction){
 	int slices = 15;
 	//0.42
 	float angle = direction*PI/slices;
-	float NumAngle = 0;
-	float x = 0;
-	float y = 0;
+	float numAngle = 0;
 	for (int i = 0; i <= slices; i++)
 	{
 		for (float j = 0.0f; j <= radius; j++)
 		{
 			if ((radius-j)>=0)
 			{
-				float x = (radius-j) * glm::sin(NumAngle);
-				float y = (radius-j) * glm::cos(NumAngle);
-				NumAngle += angle;
+				float x = (radius-j) * glm::sin(numAngle);
+				float y = (radius-j) * glm::cos(numAngle);
+				numAngle += angle;
 				c.push_back(x);
 				c.push_back(y);
 				c.push_back(0.0f);
@@ -52,7 +50,7 @@ std::vector<int> drawglobeEBO(int radius, int direction){
 	return ebo;
 }
 
-void drawFlower(int radius, int direction) {
+void displayFlower(int radius, int direction) {
     glfwInit();
 
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -72,7 +70,7 @@ void drawFlower(int radius, int direction) {
 	}
 
 	glEnable(GL_DEPTH_TEST);
-	Shader shader("./src/shader/flower.vert", "./src/shader/flower.frag");
+	Shader shader("../src/shader/flower.vert", "../src/shader/flower.frag");
 	vector<float> mmc = drawglobeVBO(radius, direction);
 	vector<int> mfc = drawglobeEBO(radius, direction);
 
