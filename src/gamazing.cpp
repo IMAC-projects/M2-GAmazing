@@ -140,8 +140,8 @@ int main()
     //unsigned char* rgbBuffer = computeFractal(g_position, g_c, g_zoom, g_maxIter, buf, width, height);
     unsigned char* rgbBuffer = computeRedFractal(g_position, g_c, g_zoom, g_maxIter, buf, width, height);
     circle();
-    //flower();
-    //displayTexture(rgbBuffer,width,height,3);
+    flower();
+    displayTexture(rgbBuffer,width,height,3);
     //sierpinski();
     return 0;
 }

@@ -108,6 +108,6 @@ void displayFlower(int radius, int direction) {
 	}
 	glDeleteVertexArrays(1, &cubeVAO);
 	glDeleteBuffers(1, &VBO);
-
+    glfwDestroyWindow(window);
 	glfwTerminate();
 }
