@@ -194,6 +194,6 @@ void displayTexture(unsigned char* loadedTexture, int width, int height, int cha
     glDeleteVertexArrays(1, &VAO);
     glDeleteBuffers(1, &VBO);
     glDeleteBuffers(1, &IBO);
- 
+    glfwDestroyWindow(window);
     glfwTerminate();
 }

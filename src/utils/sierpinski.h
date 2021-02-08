@@ -71,7 +71,6 @@ void sierpinski()
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
-
-    // Close OpenGL window and terminate GLFW
+    glfwDestroyWindow(window);
     glfwTerminate();
 }

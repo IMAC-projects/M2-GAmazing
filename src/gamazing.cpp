@@ -50,9 +50,11 @@ void flower()
     displayFlower(radius,direction[c3ga::E0]);
 }
 
-void sierpinski()
+void pointTest()
 {
-    
+    auto randPoint = rand() % 100 + 1;
+    auto point = c3ga::point<double>(0,0,2.0);
+    std::cout << point << std::endl;
 }
 
 unsigned char* computeRedFractal(const c3ga::Mvec<double> &translation, const c3ga::Mvec<double> &c, const c3ga::Mvec<float> zoom, int maxIter,
@@ -148,5 +150,6 @@ int main()
     flower();
     displayTexture(rgbBuffer,width,height,3);
     //sierpinski();
+    pointTest();
     return 0;
 }
