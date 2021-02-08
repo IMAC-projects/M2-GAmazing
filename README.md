@@ -14,10 +14,10 @@ The aim of this project is to realize multiple forms and fractals with geometric
 Download this [GARAMON](https://github.com/vincentnozick/garamon)
 
 ```bash
+cd garamon
 mkdir build
 cd build
 cmake ..
-make
 sudo make install
 ```
 
@@ -30,3 +30,13 @@ sudo make install
 - glm
 - glew
 - glfw
+
+## Getting started
+
+```bash
+mkdir build
+cd build
+cmake ..
+make
+./bin/GAmazing
+```
