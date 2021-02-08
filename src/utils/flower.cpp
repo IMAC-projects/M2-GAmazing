@@ -1,12 +1,15 @@
 #include "flower.h"
 #include "shader.h"
+#include <time.h>
 
 std::vector<float> drawglobeVBO(int radius, int direction){
 	vector<float> c;
 
 	int slices = 15;
 	//0.42
-	float angle = direction*PI/slices;
+	srand (time(NULL));
+	//when rand() % 2 + 1 is equal to 1 it's super fun !
+	float angle = direction*rand() % 2 + 1*PI/slices;
 	float numAngle = 0;
 	for (int i = 0; i <= slices; i++)
 	{
@@ -52,7 +55,6 @@ std::vector<int> drawglobeEBO(int radius, int direction){
 
 void displayFlower(int radius, int direction) {
     glfwInit();
-
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
@@ -70,7 +72,7 @@ void displayFlower(int radius, int direction) {
 	}
 
 	glEnable(GL_DEPTH_TEST);
-	Shader shader("../src/shader/flower.vert", "../src/shader/flower.frag");
+	Shader shader("../src/shader/flower.vert", "../src/shader/color.frag");
 	vector<float> mmc = drawglobeVBO(radius, direction);
 	vector<int> mfc = drawglobeEBO(radius, direction);
 

@@ -2,6 +2,25 @@
 
 const int numPoints = 1000000;
 
+float ZOOM = {1.0f};
+
+void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
+{
+    if (key == GLFW_KEY_W && (action == GLFW_PRESS || action == GLFW_REPEAT))
+	{        
+        ZOOM = ZOOM * 1.04f;
+        if (ZOOM > 50.0f)
+            ZOOM = 1.0f;
+	}
+
+	if (key == GLFW_KEY_S && (action == GLFW_PRESS || action == GLFW_REPEAT))
+	{        
+        ZOOM = ZOOM * 0.96f;
+        if (ZOOM < 0.00001f)
+            ZOOM = 0.00001f;
+	}
+}
+
 void sierpinski()
 {
     // Initialise GLFW
@@ -19,13 +38,14 @@ void sierpinski()
 	}
 	
 	glfwMakeContextCurrent(window);
+    glfwSetKeyCallback(window, key_callback);
 
     if(glewInit()) {
 		std::cout << "Failed initializing GLEW\n";
 	}
 
     // Load shaders and use the resulting shader program
-	Shader shader("../src/shader/flower.vert", "../src/shader/flower.frag");
+	Shader shader("../src/shader/zoom.vert", "../src/shader/color.frag");
 
     glm::vec2 points[numPoints];
 
@@ -63,11 +83,12 @@ void sierpinski()
     glEnableVertexAttribArray(0);
 
     while (!glfwWindowShouldClose(window)){
-        glClearColor( 1.0, 1.0, 1.0, 1.0 ); // white background
-        glClear( GL_COLOR_BUFFER_BIT );     // clear the window
+		glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+        glClear( GL_COLOR_BUFFER_BIT );
         shader.use_shader();
+        shader.set_float("zoom",ZOOM);
         glBindVertexArray(vao[0]);
-        glDrawArrays( GL_POINTS, 0, numPoints );    // draw the points
+        glDrawArrays(GL_POINTS, 0, numPoints);    // draw the points
         glfwSwapBuffers(window);
         glfwPollEvents();
     }

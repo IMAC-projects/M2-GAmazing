@@ -1,80 +1,5 @@
 #include "displayTexture.h"
-
-int screen_width{ 1080 };
-int screen_height{ 1080 };
-float center_x{ 0.0f };
-float center_y{ 0.0f };
-float zoom{ 1.0 };
-
-void framebuffer_size_callback(GLFWwindow * window, int screen_width, int screen_height)
-{
-    glViewport(0, 0, screen_width, screen_height);
-}
-
-void process_input(GLFWwindow * window)
-{
-    if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
-    {
-        glfwSetWindowShouldClose(window, true);
-    }
- 
-    if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
-    {
-        center_y = center_y + 0.01f * zoom;
-        if (center_y > 1.0f)
-            center_y = 1.0f;
-    }
- 
-    if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
-    {
-        center_y = center_y - 0.01f * zoom;
-        if (center_y < -1.0f)
-            center_y = -1.0f;
-    }
- 
-    if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS)
-    {
-        center_x = center_x - 0.01f * zoom;
-        if (center_x < -1.0f)
-            center_x = -1.0f;
-    }
- 
-    if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS)
-    {
-        center_x = center_x + 0.01f * zoom;
-        if (center_x > 1.0f)
-            center_x = 1.0f;
-    }
- 
-    if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-    {
-        zoom = zoom * 1.04f;
-        if (zoom > 1.0f)
-            zoom = 1.0f;
-    }
- 
-    if (glfwGetKey(window, GLFW_KEY_Z) == GLFW_PRESS)
-    {
-        zoom = zoom * 0.96f;
-        if (zoom < 0.00001f)
-            zoom = 0.00001f;
-    }
-}
-
-glm::vec4 find_ranges(std::vector<float> & data)
-{
-    std::sort(data.begin(), data.end());
-    int lowest = 0;
-    while (data[lowest] == 0.0f)
-    {
-        ++lowest;
-    }
- 
-    int size = data.size();
-    int length = size - lowest;
-    glm::vec4 ranges = glm::vec4( data[lowest], data[lowest + length * 3 / 4 - 1], data[lowest + length * 7 / 8 - 1], data[size - 1] );
-    return ranges;
-}
+#include "shader.h"
 
 void displayTexture(unsigned char* loadedTexture, int width, int height, int channels)
 {
@@ -83,7 +8,7 @@ void displayTexture(unsigned char* loadedTexture, int width, int height, int cha
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
  
-    GLFWwindow * window = glfwCreateWindow(screen_width, screen_height, "Texture", NULL, NULL);
+    GLFWwindow * window = glfwCreateWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Texture", NULL, NULL);
  
     if (window == nullptr)
     {
@@ -96,8 +21,7 @@ void displayTexture(unsigned char* loadedTexture, int width, int height, int cha
     if (glewInit())
         std::cout << "Failed initializing GLEW\n";
  
-    glViewport(0, 0, screen_width, screen_height);
-    glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
+    glViewport(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
     
     Shader our_shader("../src/shader/displayTexture.vert", "../src/shader/displayTexture.frag");
     
@@ -162,15 +86,9 @@ void displayTexture(unsigned char* loadedTexture, int width, int height, int cha
  
     glEnable(GL_DEPTH_TEST);
 
-    std::vector<float> pixel_data(screen_width * screen_height, 0.0f);
-    glm::vec4 ranges = glm::vec4(0.0001f, 0.33333f, 0.66667f, 1.00f);
-
     while (!glfwWindowShouldClose(window))
     {
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
- 
-        process_input(window);
- 
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); 
         our_shader.use_shader();
         // bind texture to texture unit 0
         glActiveTexture(GL_TEXTURE0);
@@ -186,7 +104,6 @@ void displayTexture(unsigned char* loadedTexture, int width, int height, int cha
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
         glfwSwapBuffers(window);
         glfwPollEvents();
-        ranges = find_ranges(pixel_data);
     }
     
     glDeleteTextures(1, &texture);

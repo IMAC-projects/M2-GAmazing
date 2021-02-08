@@ -52,7 +52,6 @@ void flower()
 
 void pointTest()
 {
-    auto randPoint = rand() % 100 + 1;
     auto point = c3ga::point<double>(0,0,2.0);
     std::cout << point << std::endl;
 }
@@ -148,8 +147,8 @@ int main()
     unsigned char* rgbBuffer = computeRedFractal(g_position, g_c, g_zoom, g_maxIter, buf, width, height);
     circle();
     flower();
-    displayTexture(rgbBuffer,width,height,3);
-    //sierpinski();
-    pointTest();
+    //displayTexture(rgbBuffer,width,height,3);
+    sierpinski();
+    //pointTest();
     return 0;
 }

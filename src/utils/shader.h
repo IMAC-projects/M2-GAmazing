@@ -8,6 +8,9 @@
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
+
+#define SCREEN_WIDTH 1080
+#define SCREEN_HEIGHT 1080
  
 class Shader
 {
