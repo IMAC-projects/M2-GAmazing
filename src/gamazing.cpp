@@ -50,6 +50,11 @@ void flower()
     displayFlower(radius,direction[c3ga::E0]);
 }
 
+void sierpinski()
+{
+    
+}
+
 unsigned char* computeRedFractal(const c3ga::Mvec<double> &translation, const c3ga::Mvec<double> &c, const c3ga::Mvec<float> zoom, int maxIter,
                     std::vector<unsigned char> &rgbBuffer, int width, int height) 
 {

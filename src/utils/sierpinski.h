@@ -1,6 +1,6 @@
 #include "shader.h"
 
-const int NumPoints = 1000000;
+const int numPoints = 1000000;
 
 void sierpinski()
 {
@@ -27,18 +27,18 @@ void sierpinski()
     // Load shaders and use the resulting shader program
 	Shader shader("../src/shader/flower.vert", "../src/shader/flower.frag");
 
-    glm::vec2 points[NumPoints];
+    glm::vec2 points[numPoints];
 
     // Specifiy the vertices for a triangle
     glm::vec2 vertices[3] = {
-        glm::vec2( -1.0, -1.0 ), glm::vec2( 0.0, 1.0 ), glm::vec2( 1.0, -1.0 )
+        glm::vec2(-1.0, -1.0), glm::vec2(0.0, 1.0), glm::vec2(1.0, -1.0)
     };
 
     // Select an arbitrary initial point inside of the triangle
     points[0] = glm::vec2( 2.5, 3);
 
     // compute and store N-1 new points
-    for ( int i = 1; i < NumPoints; ++i ) {
+    for ( int i = 1; i < numPoints; ++i ) {
         int j = rand() % 3;   // pick a vertex at random
 
         // Compute the point halfway between the selected vertex
@@ -55,7 +55,7 @@ void sierpinski()
     glGenBuffers( 1, &buffer );
     glBindVertexArray( vao[0] );
     glBindBuffer( GL_ARRAY_BUFFER, buffer );
-    glBufferData( GL_ARRAY_BUFFER, NumPoints * sizeof(float), points, GL_STATIC_DRAW );
+    glBufferData( GL_ARRAY_BUFFER, numPoints * sizeof(float), points, GL_STATIC_DRAW );
 
 
     // Initialize the vertex position attribute from the vertex shader
@@ -67,7 +67,7 @@ void sierpinski()
         glClear( GL_COLOR_BUFFER_BIT );     // clear the window
         shader.use_shader();
         glBindVertexArray(vao[0]);
-        glDrawArrays( GL_POINTS, 0, NumPoints );    // draw the points
+        glDrawArrays( GL_POINTS, 0, numPoints );    // draw the points
         glfwSwapBuffers(window);
         glfwPollEvents();
     }

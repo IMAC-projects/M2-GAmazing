@@ -30,13 +30,22 @@ sudo make install
 - glm
 - glew
 - glfw
+- (optional) Doxygen
+
+## Generate documentation (optional)
+
+`̀ `bash
+cd doxygen
+doxygen Doxyfile
+`̀ `
 
 ## Getting started
 
-```bash
+`̀ `bash
 mkdir build
 cd build
 cmake ..
 make
 ./bin/GAmazing
-```
+`̀ `
+
