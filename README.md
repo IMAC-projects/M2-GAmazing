@@ -34,18 +34,18 @@ sudo make install
 
 ## Generate documentation (optional)
 
-`̀ `bash
+```bash
 cd doxygen
 doxygen Doxyfile
-`̀ `
+```
 
 ## Getting started
 
-`̀ `bash
+```bash
 mkdir build
 cd build
 cmake ..
 make
 ./bin/GAmazing
-`̀ `
+```
 
