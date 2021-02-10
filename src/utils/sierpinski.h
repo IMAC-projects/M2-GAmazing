@@ -2,7 +2,7 @@
 
 const int numPoints = 1000000;
 
-float ZOOM = {1.0f};
+float ZOOM = {0.5f};
 
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
@@ -30,7 +30,7 @@ void sierpinski()
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-    GLFWwindow* window = glfwCreateWindow(800, 800, "Sierpinski", NULL, NULL);
+    GLFWwindow* window = glfwCreateWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Sierpinski", NULL, NULL);
 	if (window == NULL)
 	{
 		std::cout << "Failed to create GLFW window" << std::endl;

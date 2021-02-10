@@ -1,8 +1,5 @@
 #include "circle.h"
-
-
-int width{ 500 };
-int height{ 500 };
+#include "shader.h"
 
 void drawCircle(int x, int y, int r) {
     // Actual OpenGL calls
@@ -10,7 +7,7 @@ void drawCircle(int x, int y, int r) {
     glDisable(GL_DEPTH_TEST);
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    glOrtho(0, width, height, 0, 0, 1);
+    glOrtho(0, SCREEN_WIDTH, SCREEN_HEIGHT, 0, 0, 1);
     glMatrixMode(GL_MODELVIEW);
 
     // Draw our line
@@ -20,7 +17,7 @@ void drawCircle(int x, int y, int r) {
             // framerate-based 
             static double iteration = 0;
             // The x, y offset onto the screen
-            static const int offset = 150;
+            static const int offset = 500;
             // The radius of both our circle and the circle it's spinning in.
 
             // Calculate our x, y cooredinates
@@ -46,8 +43,10 @@ void drawCircle(int x, int y, int r) {
 void displayCircle(int x, int y, int r)
 {
     glfwInit();
+    int width = SCREEN_WIDTH;
+    int height = SCREEN_HEIGHT;
  
-    GLFWwindow * window = glfwCreateWindow(width, height, "Texture", NULL, NULL);
+    GLFWwindow * window = glfwCreateWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Circle", NULL, NULL);
  
     if (window == nullptr)
     {

@@ -11,6 +11,7 @@
 #include "utils/displayTexture.h"
 #include "utils/flower.h"
 #include "utils/sierpinski.h"
+#include "utils/square.h"
 
 void circle() 
 {
@@ -139,16 +140,17 @@ int main()
     int g_maxIter = 30;
     c3ga::Mvec<double> g_position = c3ga::point<double>(100.0f * g_zoom);
 
-    int width = 1080;
-    int height = 1080;
-    std::vector<unsigned char>buf(width * height * 3);
+    std::vector<unsigned char>buf(SCREEN_WIDTH * SCREEN_HEIGHT * 3);
+    std::vector<unsigned char>buf2(SCREEN_WIDTH * SCREEN_HEIGHT * 3);
 
-    //unsigned char* rgbBuffer = computeFractal(g_position, g_c, g_zoom, g_maxIter, buf, width, height);
-    unsigned char* rgbBuffer = computeRedFractal(g_position, g_c, g_zoom, g_maxIter, buf, width, height);
-    circle();
-    flower();
-    //displayTexture(rgbBuffer,width,height,3);
-    sierpinski();
+    unsigned char* rgbBuffer = computeFractal(g_position, g_c, g_zoom, g_maxIter, buf, SCREEN_WIDTH, SCREEN_HEIGHT);
+    unsigned char* rgbBuffer2 = computeRedFractal(g_position, g_c, g_zoom, g_maxIter, buf2, SCREEN_WIDTH, SCREEN_HEIGHT);
+    displaySquare();
+    //circle();
+    //flower();
+    //displayTexture(rgbBuffer,SCREEN_WIDTH,SCREEN_HEIGHT,3);
+    //displayTexture(rgbBuffer2,SCREEN_WIDTH,SCREEN_HEIGHT,3);
+    //sierpinski();
     //pointTest();
     return 0;
 }

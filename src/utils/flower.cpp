@@ -58,7 +58,7 @@ void displayFlower(int radius, int direction) {
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-	GLFWwindow* window = glfwCreateWindow(800, 800, "Flower", NULL, NULL);
+	GLFWwindow* window = glfwCreateWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Flower", NULL, NULL);
 	if (window == NULL)
 	{
 		std::cout << "Failed to create GLFW window" << std::endl;
@@ -76,10 +76,10 @@ void displayFlower(int radius, int direction) {
 	vector<float> mmc = drawglobeVBO(radius, direction);
 	vector<int> mfc = drawglobeEBO(radius, direction);
 
-	unsigned int VBO, cubeVAO;
-	glGenVertexArrays(1, &cubeVAO);
+	unsigned int VBO, VAO;
+	glGenVertexArrays(1, &VAO);
 	glGenBuffers(1, &VBO);
-	glBindVertexArray(cubeVAO);
+	glBindVertexArray(VAO);
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
 	glBufferData(GL_ARRAY_BUFFER, mmc.size()*sizeof(float),&mmc[0], GL_STATIC_DRAW);
 
@@ -103,12 +103,13 @@ void displayFlower(int radius, int direction) {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glPolygonMode(GL_FRONT_AND_BACK,GL_LINE);
 		shader.use_shader();
-		glBindVertexArray(cubeVAO);
+		glBindVertexArray(VAO);
 		glDrawElements(GL_TRIANGLES, mfc.size(), GL_UNSIGNED_INT,0);
+		glBindVertexArray(0);
 		glfwSwapBuffers(window);
 		glfwPollEvents(); 
 	}
-	glDeleteVertexArrays(1, &cubeVAO);
+	glDeleteVertexArrays(1, &VAO);
 	glDeleteBuffers(1, &VBO);
     glfwDestroyWindow(window);
 	glfwTerminate();
