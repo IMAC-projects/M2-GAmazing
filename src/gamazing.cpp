@@ -10,7 +10,6 @@
 #include "utils/circle.h"
 #include "utils/displayTexture.h"
 #include "utils/flower.h"
-#include "utils/sierpinski.h"
 #include "utils/square.h"
 
 void circle() 
@@ -49,12 +48,6 @@ void flower()
     c3ga::Mvec<double> direction;
     direction[c3ga::E0] =  center[c3ga::E0];
     displayFlower(radius,direction[c3ga::E0]);
-}
-
-void pointTest()
-{
-    auto point = c3ga::point<double>(0,0,2.0);
-    std::cout << point << std::endl;
 }
 
 unsigned char* computeRedFractal(const c3ga::Mvec<double> &translation, const c3ga::Mvec<double> &c, const c3ga::Mvec<float> zoom, int maxIter,
@@ -146,11 +139,9 @@ int main()
     unsigned char* rgbBuffer = computeFractal(g_position, g_c, g_zoom, g_maxIter, buf, SCREEN_WIDTH, SCREEN_HEIGHT);
     unsigned char* rgbBuffer2 = computeRedFractal(g_position, g_c, g_zoom, g_maxIter, buf2, SCREEN_WIDTH, SCREEN_HEIGHT);
     displaySquare();
-    //circle();
-    //flower();
-    //displayTexture(rgbBuffer,SCREEN_WIDTH,SCREEN_HEIGHT,3);
-    //displayTexture(rgbBuffer2,SCREEN_WIDTH,SCREEN_HEIGHT,3);
-    //sierpinski();
-    //pointTest();
+    circle();
+    flower();
+    displayTexture(rgbBuffer,SCREEN_WIDTH,SCREEN_HEIGHT,3);
+    displayTexture(rgbBuffer2,SCREEN_WIDTH,SCREEN_HEIGHT,3);
     return 0;
 }

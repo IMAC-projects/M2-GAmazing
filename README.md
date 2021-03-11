@@ -49,3 +49,14 @@ make
 ./bin/GAmazing
 ```
 
+## Explanation
+
+### Square
+
+### Bouncing circle
+
+### Flower
+
+### Fractal 1
+
+### Fractal 2
