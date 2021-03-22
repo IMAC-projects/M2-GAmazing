@@ -55,7 +55,8 @@ make
 
 4 CGA points a, b, c, d
 
-```c3ga::Mvec<float> a = c3ga::point<float>(-0.5f, -0.5f, 0);
+```c++
+c3ga::Mvec<float> a = c3ga::point<float>(-0.5f, -0.5f, 0);
 c3ga::Mvec<float> b = c3ga::point<float>(0.5f, -0.5f, 0);
 c3ga::Mvec<float> c = c3ga::point<float>(0.5f, 0.5f, 0);
 c3ga::Mvec<float> d = c3ga::point<float>(-0.5f, 0.5f, 0);
@@ -63,19 +64,20 @@ c3ga::Mvec<float> d = c3ga::point<float>(-0.5f, 0.5f, 0);
 
 #### Constrution of the plane 
 
-```
+```c++
 c3ga::Mvec<float> plane = a ^ b ^ c ^ c3ga::ei<float>();
 ```
 
 #### Normals construction
 
-```
+```c++
 c3ga::Mvec<float> normal = plane * a;
 ```
 
 #### Retriving vertices position in euclidean space
 
-```c3ga::Mvec<float> a0 = a / a[c3ga::E0];
+```c++
+c3ga::Mvec<float> a0 = a / a[c3ga::E0];
 c3ga::Mvec<float> b0 = b / b[c3ga::E0];
 c3ga::Mvec<float> c0 = c / c[c3ga::E0];
 c3ga::Mvec<float> d0 = d / d[c3ga::E0];
@@ -90,7 +92,8 @@ glm::vec3 dPos = { d0[c3ga::E1], d0[c3ga::E2], d0[c3ga::E3] };
 
 #### Simple circle
 
-```c3ga::Mvec<double> C = c3ga::point<double>(1,2,2.0) 
+```c++
+c3ga::Mvec<double> C = c3ga::point<double>(1,2,2.0) 
                       ^ c3ga::point<double>(2,0,2.0) 
                       ^ c3ga::point<double>(1,0,2.0);  
 ```
@@ -103,7 +106,7 @@ extractDualCircle use the center as x and y coord. The radius is extracted for t
 
 #### Simple sphere
 
-```
+```c++
 c3ga::Mvec<double> sphere = c3ga::point<double>(0,0,2.0) 
                           ^ c3ga::point<double>(2,0,2.0) 
                           ^ c3ga::point<double>(1,1,2.0) 
@@ -112,7 +115,7 @@ c3ga::Mvec<double> sphere = c3ga::point<double>(0,0,2.0)
 
 We dualize the sphere and extract some parameters.
 
-```
+```c++
 sphere /= sphere[c3ga::E0]; // back to correct scale
 double squareRadius = sphere | sphere;
 double radius = sqrt(squareRadius);
@@ -128,7 +131,7 @@ The direction is used to compute the angle of the flower and the radius is obvio
 
 I played with some multivectors.
 
-```
+```c++
 c3ga::Mvec<double> p;
 p[c3ga::E0] = c3ga::e2<double>();
 p[c3ga::E1] = imageXf;
@@ -145,7 +148,7 @@ for (int i = 0; i < maxIter; i++) {
 
 Each value is then stored into a buffer
 
-```
+```c++
 float valF = (x.norm() / 1e10f) * 100;
 float val = (valF > 255) ? 255 : (valF);
 rgbBuffer[idx + 0] = 0.0f;
@@ -153,6 +156,6 @@ rgbBuffer[idx + 1] = int(val/5);
 rgbBuffer[idx + 2] = val;
 ```
 
-### Fractal 2
+### Fractal 2
 
 Same as above except that we play with the condition on x and the buffer storage.
