@@ -138,6 +138,7 @@ int main()
 
     unsigned char* rgbBuffer = computeFractal(g_position, g_c, g_zoom, g_maxIter, buf, SCREEN_WIDTH, SCREEN_HEIGHT);
     unsigned char* rgbBuffer2 = computeRedFractal(g_position, g_c, g_zoom, g_maxIter, buf2, SCREEN_WIDTH, SCREEN_HEIGHT);
+    
     displaySquare();
     circle();
     flower();
