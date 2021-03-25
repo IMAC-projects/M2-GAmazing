@@ -85,8 +85,7 @@ glm::vec3 aPos = { a0[c3ga::E1], a0[c3ga::E2], a0[c3ga::E3] };
 glm::vec3 bPos = { b0[c3ga::E1], b0[c3ga::E2], b0[c3ga::E3] };
 glm::vec3 cPos = { c0[c3ga::E1], c0[c3ga::E2], c0[c3ga::E3] };
 glm::vec3 dPos = { d0[c3ga::E1], d0[c3ga::E2], d0[c3ga::E3] };
-```
-          
+```     
 
 ### Bouncing circle
 
@@ -159,3 +158,15 @@ rgbBuffer[idx + 2] = val;
 ### Fractal 2
 
 Same as above except that we play with the condition on x and the buffer storage.
+
+## Ressources
+
+Nom du site our de l'article| Auteur(s) | Lien
+--- | --- | --- |
+GARAMON : Geometric Algebra Recursive and Adaptative Monster | Stephane Breuils. Vincent Nozick. Laurent Fuchs | http://www-igm.univ-mlv.fr/~vnozick/data/garamon.pdf |
+Computer graphics using conformal geometric algebra | Richard James Wareham | https://rjw57.github.io/phd-thesis/rjw-thesis.pdf |
+Euclidean Geometry and Geometric Algebra | Chris Doran | http://geometry.mrao.cam.ac.uk/2020/06/euclidean-geometry-and-geometric-algebra/ |
+Geometric algebra for computer science | Leo Dorst. Daniel Fontijne. Stephen Mann | https://geometricalgebra.org/sandbox.html |
+Ganja | Steven De Keninck | https://github.com/enkimute/ganja.js |
+Polyèdres | Mathcurve | https://mathcurve.com/polyedres/polyedres.shtml |
+Clifford Algebra: A visual introduction | Slehar | https://slehar.wordpress.com/2014/03/18/clifford-algebra-a-visual-introduction/

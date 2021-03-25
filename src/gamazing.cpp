@@ -50,7 +50,7 @@ void flower()
     displayFlower(radius,direction[c3ga::E0]);
 }
 
-unsigned char* computeRedFractal(const c3ga::Mvec<double> &translation, const c3ga::Mvec<double> &c, const c3ga::Mvec<float> zoom, int maxIter,
+unsigned char* computeRedFractal(const c3ga::Mvec<double> &translation, const c3ga::Mvec<double> &c, int maxIter,
                     std::vector<unsigned char> &rgbBuffer, int width, int height) 
 {
     int idx = 0;
@@ -77,7 +77,6 @@ unsigned char* computeRedFractal(const c3ga::Mvec<double> &translation, const c3
             }
             
             float valF = x.norm() / 10.0f;
-            //unsigned char val = (valF > 255) ? 255 : (unsigned char)(valF + 0.5f);
 
             rgbBuffer[idx] = 255.0f;
             rgbBuffer[idx + 1] = rgbBuffer[idx + 2] = valF;
@@ -88,7 +87,7 @@ unsigned char* computeRedFractal(const c3ga::Mvec<double> &translation, const c3
 }
 
 
-unsigned char* computeFractal(const c3ga::Mvec<double> &translation, const c3ga::Mvec<double> &c, const float zoom, int maxIter,
+unsigned char* computeFractal(const c3ga::Mvec<double> &translation, const c3ga::Mvec<double> &c, int maxIter,
                     std::vector<unsigned char> &rgbBuffer, int width, int height) 
 {
     int idx = 0;
@@ -129,15 +128,14 @@ unsigned char* computeFractal(const c3ga::Mvec<double> &translation, const c3ga:
 int main()
 {
     c3ga::Mvec<double> g_c = c3ga::point<double>(c3ga::e12<double>(),-0.9,-0.3);
-    float g_zoom =  0.07f;
     int g_maxIter = 30;
-    c3ga::Mvec<double> g_position = c3ga::point<double>(100.0f * g_zoom);
+    c3ga::Mvec<double> g_position = c3ga::point<double>(100.0f);
 
     std::vector<unsigned char>buf(SCREEN_WIDTH * SCREEN_HEIGHT * 3);
     std::vector<unsigned char>buf2(SCREEN_WIDTH * SCREEN_HEIGHT * 3);
 
-    unsigned char* rgbBuffer = computeFractal(g_position, g_c, g_zoom, g_maxIter, buf, SCREEN_WIDTH, SCREEN_HEIGHT);
-    unsigned char* rgbBuffer2 = computeRedFractal(g_position, g_c, g_zoom, g_maxIter, buf2, SCREEN_WIDTH, SCREEN_HEIGHT);
+    unsigned char* rgbBuffer = computeFractal(g_position, g_c, g_maxIter, buf, SCREEN_WIDTH, SCREEN_HEIGHT);
+    unsigned char* rgbBuffer2 = computeRedFractal(g_position, g_c, g_maxIter, buf2, SCREEN_WIDTH, SCREEN_HEIGHT);
     
     displaySquare();
     circle();
