@@ -2,8 +2,6 @@
 #include "shader.h"
 
 void drawCircle(int x, int y, int r) {
-    // Actual OpenGL calls
-    glClear(GL_COLOR_BUFFER_BIT);
     glDisable(GL_DEPTH_TEST);
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
@@ -63,6 +61,7 @@ void displayCircle(int x, int y, int r)
     {
         glfwGetFramebufferSize(window, &width, &height);
         drawCircle(x,y,r);
+        drawCircle(x*2,y*2,r*2);
         glfwSwapBuffers(window);
         glfwPollEvents();
     }

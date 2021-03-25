@@ -16,7 +16,7 @@ class Shader
 {
 public:
     unsigned int program_ID;
-    Shader(const char * vertex_shader_path, const char * fragment_shader_path);
+    Shader(const char* vertex_shader_path, const char* fragment_shader_path);
     ~Shader();
  
     void use_shader();

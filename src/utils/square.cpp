@@ -2,17 +2,15 @@
 #include "gl-exception.h"
 
 std::array<glm::vec3,6> squareVertices()
-{    
+{  
+    //4 points
     c3ga::Mvec<float> a = c3ga::point<float>(-0.5f, -0.5f, 0);
     c3ga::Mvec<float> b = c3ga::point<float>(0.5f, -0.5f, 0);
     c3ga::Mvec<float> c = c3ga::point<float>(0.5f, 0.5f, 0);
     c3ga::Mvec<float> d = c3ga::point<float>(-0.5f, 0.5f, 0);
-    c3ga::Mvec<float> plane = a ^ b ^ c ^ c3ga::ei<float>();
-    c3ga::Mvec<float> normal = plane * a;
 
-    c3ga::Mvec<float> orientation = (c3ga::ei<float>() | (!normal)) ^ c3ga::ei<float>();
-    orientation = orientation | c3ga::e0<float>();
-    orientation /= orientation.norm();
+    // construction of a plane
+    c3ga::Mvec<float> plane = a ^ b ^ c ^ c3ga::ei<float>();
 
     // Retriving vertices position in euclidean space
     c3ga::Mvec<float> a0 = a / a[c3ga::E0];
@@ -62,7 +60,7 @@ void displaySquare()
     }
 
 	glEnable(GL_DEPTH_TEST);
-	Shader shader("../src/shader/flower.vert", "../src/shader/color.frag");
+	Shader shader("../src/shader/pos.vert", "../src/shader/color.frag");
 
     auto vertices = squareVertices();
 
@@ -78,7 +76,6 @@ void displaySquare()
  
     while (!glfwWindowShouldClose(window))
     {
-
 		glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         glfwGetFramebufferSize(window, &width, &height);

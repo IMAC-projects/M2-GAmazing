@@ -6,8 +6,8 @@ std::vector<float> drawglobeVBO(int radius, int direction){
 	vector<float> c;
 
 	int slices = 15;
-	//0.42
 	srand (time(NULL));
+
 	//when rand() % 2 + 1 is equal to 1 it's super fun !
 	float angle = direction*rand() % 2 + 1*PI/slices;
 	float numAngle = 0;
@@ -72,7 +72,7 @@ void displayFlower(int radius, int direction) {
 	}
 
 	glEnable(GL_DEPTH_TEST);
-	Shader shader("../src/shader/flower.vert", "../src/shader/color.frag");
+	Shader shader("../src/shader/pos.vert", "../src/shader/color.frag");
 	vector<float> mmc = drawglobeVBO(radius, direction);
 	vector<int> mfc = drawglobeEBO(radius, direction);
 
@@ -95,9 +95,6 @@ void displayFlower(int radius, int direction) {
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
 	glEnableVertexAttribArray(0);
 
-	/*glm::mat4 projection = glm::perspective(45.0f, (float)800 / (float)600, 0.1f, 100.0f);
-
-	glm::mat4 view = camera.GetViewMatrix();*/
 	while (!glfwWindowShouldClose(window)){
 		glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
